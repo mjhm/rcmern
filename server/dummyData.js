@@ -1,10 +1,35 @@
+
+import cuid from 'cuid';
 import Post from './models/post';
+import ProductType from './models/product_type';
 
 export default function () {
-  Post.count().exec((err, count) => {
-    if (count > 0) {
-      return;
-    }
+  return ProductType.remove({}).exec()
+  .then(() => {
+    const content = [
+      ['Appliances', 'part'],
+      ['Heating & Cooling', 'part'],
+      ['Outdoor', 'part'],
+      ['Power Tools', 'part'],
+      ['Accessories', 'tool'],
+      ['Attachments', 'tool'],
+      ['Hand Tools', 'tool'],
+      ['Power Tools', 'tool'],
+    ];
+
+    return ProductType.create(content.map((item) => (
+      {
+        name: item[0],
+        use: item[1],
+        cuid: cuid(),
+      }
+    )));
+  })
+  .then(() => Post.remove({}).exec())
+  .then(() => {
+    // if (count > 0) {
+    //   return;
+    // }
 
     const content1 = `Sed ut perspiciatis unde omnis iste natus error
       sit voluptatem accusantium doloremque laudantium, totam rem aperiam,

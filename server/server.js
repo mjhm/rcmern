@@ -40,14 +40,15 @@ import serverConfig from './config';
 mongoose.Promise = global.Promise;
 
 // MongoDB Connection
-mongoose.connect(serverConfig.mongoURL, (error) => {
+const dbReady = mongoose.connect(serverConfig.mongoURL)
+.then((error) => {
   if (error) {
     console.error('Please make sure Mongodb is installed and running!'); // eslint-disable-line no-console
     throw error;
   }
 
   // feed some dummy data in DB.
-  dummyData();
+  return dummyData();
 });
 
 // Apply body Parser and server public assets and routes
@@ -80,7 +81,7 @@ const renderFullPage = (html, initialState) => {
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
       </head>
       <body>
-        <div id="root">${html}</div>
+        <div id="root">${process.env.NODE_ENV === 'production' ? html : `<div>${html}</div>`}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
           ${process.env.NODE_ENV === 'production' ?
@@ -140,10 +141,12 @@ app.use((req, res, next) => {
 });
 
 // start app
-app.listen(serverConfig.port, (error) => {
-  if (!error) {
-    console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
-  }
-});
+dbReady.then(() =>
+  app.listen(serverConfig.port, (error) => {
+    if (!error) {
+      console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
+    }
+  })
+);
 
 export default app;

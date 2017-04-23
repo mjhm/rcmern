@@ -4,7 +4,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import App from './App';
+import Top from './top';
 import { configureStore } from './store';
 
 // Initialize store
@@ -13,20 +13,20 @@ const mountApp = document.getElementById('root');
 
 render(
   <AppContainer>
-    <App store={store} />
+    <Top store={store} />
   </AppContainer>,
   mountApp
 );
 
 // For hot reloading of react components
 if (module.hot) {
-  module.hot.accept('./App', () => {
+  module.hot.accept('./top', () => {
     // If you use Webpack 2 in ES modules mode, you can
-    // use <App /> here rather than require() a <NextApp />.
-    const NextApp = require('./App').default; // eslint-disable-line global-require
+    // use <Top /> here rather than require() a <NextTop />.
+    const NextTop = require('./top').default; // eslint-disable-line global-require
     render(
       <AppContainer>
-        <NextApp store={store} />
+        <NextTop store={store} />
       </AppContainer>,
       mountApp
     );

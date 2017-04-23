@@ -12,7 +12,7 @@ import routes from './routes';
 // Base stylesheet
 require('./main.css');
 
-export default function App(props) {
+export default function Top(props) {
   return (
     <Provider store={props.store}>
       <IntlWrapper>
@@ -24,6 +24,6 @@ export default function App(props) {
   );
 }
 
-App.propTypes = {
+Top.propTypes = {
   store: React.PropTypes.object.isRequired,
 };
