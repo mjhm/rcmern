@@ -81,7 +81,7 @@ const renderFullPage = (html, initialState) => {
         <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' \>
         <link rel='stylesheet' href='/bootstrap/css/bootstrap-theme.css' \>
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
-        <link rel="shortcut icon" href="/images/favicon-wip2.ico" type="image/png" />
+        <link rel="shortcut icon" href="/images/favicon-wip3.ico" type="image/png" />
       </head>
       <body>
         <div id="root">${process.env.NODE_ENV === 'production' ? html : `<div>${html}</div>`}</div>
