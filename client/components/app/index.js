@@ -2,17 +2,17 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 // Import Style
-import styles from './App.css';
+import styles from './stylesheet.css';
 
 // Import Components
 import Helmet from 'react-helmet';
-import DevTools from './components/DevTools';
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+import DevTools from 'components/dev_tools';
+import Header from 'components/header';
+import Footer from 'components/footer';
 
 // Import Actions
-import { toggleAddPost } from './AppActions';
-import { switchLanguage } from '../../modules/Intl/IntlActions';
+import { toggleAddPost } from 'modules/App/AppActions';
+import { switchLanguage } from 'modules/Intl/IntlActions';
 
 export class App extends Component {
   constructor(props) {

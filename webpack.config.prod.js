@@ -37,8 +37,12 @@ module.exports = {
   module: {
     loaders: [
       {
+        test: /bootstrap.*\.css$/,
+        loader: 'style-loader!css-loader',
+      },
+      {
         test: /\.css$/,
-        exclude: /node_modules/,
+        exclude: [ /node_modules/,  /bootstrap.*\.css$/ ],
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader?localIdentName=[hash:base64]&modules&importLoaders=1!postcss-loader'),
       }, {
         test: /\.css$/,
@@ -54,6 +58,10 @@ module.exports = {
       }, {
         test: /\.json$/,
         loader: 'json-loader',
+      }, {
+        // Load font files as direct file paths
+        test: /\.(?:eot|svg|ttf|woff|woff2)$/,
+        loader: 'file-loader',
       },
     ],
   },

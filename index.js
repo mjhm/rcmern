@@ -18,7 +18,8 @@ if (process.env.NODE_ENV === 'production') {
           "verbose": false
         }
       ]
-    ]
+    ],
+    resolveModuleSource: require('babel-resolver')(__dirname)
   });
   require('babel-polyfill');
 

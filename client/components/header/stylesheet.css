@@ -1,0 +1,16 @@
+
+.rcLogoSprite {
+  background-image: url(/images/sprites/sprite-Main-2X-041916.png);
+  background-position: 0 -42px;
+  background-repeat: no-repeat;
+  background-size: 392px;
+  display: inline-block;
+  position: relative;
+  height: 57px;
+  width: 161px;
+  text-indent: -9999px;
+}
+
+.menuText {
+  font-size: 60%;
+}
