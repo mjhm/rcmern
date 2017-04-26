@@ -1,37 +1,31 @@
-import reduxCrud from 'redux-crud';
-console.log('reduxCrud', reduxCrud);
-import cuid from 'cuid';
-import _ from 'lodash';
-import qs from 'qs';
+// SPIKE
+  import reduxCrud from 'redux-crud';
+  import _ from 'lodash';
+  import qs from 'qs';
+  import callApi from '../util/apiCaller';
 
-const logError = (err) => {
-  console.error('TODO: fix logError');
-  throw err;
-};
-
-import callApi from '../util/apiCaller';
-
-
-const createFetchAction = (table, ...params) => {
-  const queryParam =  _.isObject(params[params.length - 1]) ? params.pop() : {};
-  const route = [table, ...params].join('/') +
-    (_.isEmpty(queryParam) ? '' : qs.stringify(queryParam));
-  console.log('route', route);
-  return (dispatch) => {
-    const { fetchStart, fetchSuccess, fetchError } = reduxCrud.actionCreatorsFor(table);
-    dispatch(fetchStart());
-    const promise = callApi(route)
-    .then((data) => {
-      console.log('fetchSuccess data', data);
-      dispatch(fetchSuccess(data));
-    })
-    .catch((response) => {
-      dispatch(fetchError(response));
-    })
-    .catch((err) => logError(err));
-    return promise;
+  const logError = (err) => {
+    throw err;
   };
-};
+
+  const createFetchAction = (table, ...params) => {
+    const queryParam =  _.isObject(params[params.length - 1]) ? params.pop() : {};
+    const route = [table, ...params].join('/') +
+      (_.isEmpty(queryParam) ? '' : qs.stringify(queryParam));
+    return (dispatch) => {
+      const { fetchStart, fetchSuccess, fetchError } = reduxCrud.actionCreatorsFor(table);
+      dispatch(fetchStart());
+      const promise = callApi(route)
+      .then((data) => {
+        dispatch(fetchSuccess(data));
+      })
+      .catch((response) => {
+        dispatch(fetchError(response));
+      })
+      .catch(err => logError(err));
+      return promise;
+    };
+  };
 
   // create(user) {
   //   return function(dispatch) {
