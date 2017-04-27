@@ -6,11 +6,6 @@
   import reduxCrud from 'redux-crud';
   import { enabledLanguages, localizationData } from '../intl/setup';
 
-  // Import Reducers
-  // import app from './modules/App/AppReducer';
-  // import posts from './modules/Post/PostReducer';
-  // import intl from './modules/Intl/IntlReducer';
-
   // stub intl reducer
   const initLocale = global.navigator && global.navigator.language || 'en';
   const initialState = {

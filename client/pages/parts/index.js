@@ -46,7 +46,6 @@
     productTypeList: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
       use: PropTypes.string.isRequired,
-      cuid: PropTypes.string.isRequired,
       _id: PropTypes.string.isRequired,
     })).isRequired,
     productTypeMap: PropTypes.object.isRequired,

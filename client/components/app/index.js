@@ -12,7 +12,6 @@
   import Footer from 'components/footer';
 
   // Import Actions
-  // import { toggleAddPost } from 'modules/App/AppActions';
   // import { switchLanguage } from 'modules/Intl/IntlActions';
 
   export class App extends Component {
@@ -35,8 +34,8 @@
           {this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
           <div>
             <Helmet
-              title="MERN Starter - Blog App"
-              titleTemplate="%s - Blog App"
+              title={'Appliance Parts, Lawn Mower Parts, Heating & Cooling Parts. 365 day returns.'}
+              titleTemplate="%s - titleTemplate"
               meta={[
                 { charset: 'utf-8' },
                 {
@@ -49,13 +48,6 @@
                 },
               ]}
             />
-            {
-              // <Header
-              //   switchLanguage={lang => this.props.dispatch(switchLanguage(lang))}
-              //   intl={this.props.intl}
-              //   toggleAddPost={this.toggleAddPostSection}
-              // />
-            }
             <Header/>
             <div className={styles.container}>
               {this.props.children}

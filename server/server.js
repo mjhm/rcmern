@@ -1,29 +1,13 @@
+/* eslint import/no-extraneous-dependencies: [0] */
 // SPIKE
+  import webpack from 'webpack';
   import Express from 'express';
   import compression from 'compression';
-  import mongoose from 'mongoose';
   import bodyParser from 'body-parser';
   import path from 'path';
-  import IntlWrapper from '../client/components/intl_wrapper';
-
-  // Webpack Requirements
-  import webpack from 'webpack';
-  import config from '../webpack.config.dev';
   import webpackDevMiddleware from 'webpack-dev-middleware';
   import webpackHotMiddleware from 'webpack-hot-middleware';
 
-  // Initialize the Express App
-  const app = new Express();
-
-  // Run Webpack dev server in development mode
-  if (process.env.NODE_ENV === 'development') {
-    const compiler = webpack(config);
-    app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
-    app.use(webpackHotMiddleware(compiler));
-  }
-
-  // React And Redux Setup
-  import { configureStore } from '../client/store';
   import { Provider } from 'react-redux';
   import React from 'react';
   import { renderToString } from 'react-dom/server';
@@ -32,25 +16,28 @@
 
   // Import required modules
   import routes from '../client/routes';
+  import { configureStore } from '../client/store';
   import { fetchComponentData } from './util/fetchData';
-  import posts from './routes/post.routes';
-  import dummyData from './dummyData';
+  import apiRoutes from './api_routes';
   import serverConfig from './config';
+  import IntlWrapper from '../client/components/intl_wrapper';
 
-  // Set native promises as mongoose promise
-  mongoose.Promise = global.Promise;
+  // Webpack Requirements
+  import config from '../webpack.config.dev';
 
-  // MongoDB Connection
-  const dbReady = mongoose.connect(serverConfig.mongoURL)
-  .then((error) => {
-    if (error) {
-      console.error('Please make sure Mongodb is installed and running!'); // eslint-disable-line no-console
-      throw error;
-    }
+  // Initialize the Express App
+  const app = new Express();
 
-    // feed some dummy data in DB.
-    return dummyData();
-  });
+  // Run Webpack dev server in development mode
+  if (process.env.NODE_ENV === 'development') {
+    const compiler = webpack(config);
+    app.use(webpackDevMiddleware(compiler, {
+      noInfo: true,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      publicPath: config.output.publicPath,
+    }));
+    app.use(webpackHotMiddleware(compiler));
+  }
 
   // Apply body Parser and server public assets and routes
   app.use(compression());
@@ -58,7 +45,7 @@
   app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
   app.use(Express.static(path.resolve(__dirname, '../dist')));
   app.use(Express.static(path.resolve(__dirname, '../client/assets')));
-  app.use('/api', posts);
+  app.use('/api', apiRoutes);
 
   // Render Initial HTML
   const renderFullPage = (html, initialState) => {
@@ -79,8 +66,8 @@
           ${head.script.toString()}
 
           ${process.env.NODE_ENV === 'production' ? `<link rel='stylesheet' href='${assetsManifest['/app.css']}' />` : ''}
-          <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' \>
-          <link rel='stylesheet' href='/bootstrap/css/bootstrap-theme.css' \>
+          <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
+          <link rel='stylesheet' href='/bootstrap/css/bootstrap-theme.css' />
           <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
           <link rel="shortcut icon" href="/images/favicon-wip3.ico" type="image/png" />
         </head>
@@ -100,7 +87,7 @@
     `;
   };
 
-  const renderError = err => {
+  const renderError = (err) => {
     const softTab = '&#32;&#32;&#32;&#32;';
     const errTrace = process.env.NODE_ENV !== 'production' ?
       `:<br><br><pre style="color:red">${softTab}${err.stack.replace(/\n/g, `<br>${softTab}`)}</pre>` : '';
@@ -140,17 +127,15 @@
             .status(200)
             .end(renderFullPage(initialView, finalState));
         })
-        .catch((error) => next(error));
+        .catch(error => next(error));
     });
   });
 
   // start app
-  dbReady.then(() =>
-    app.listen(serverConfig.port, (error) => {
-      if (!error) {
-        console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
-      }
-    })
-  );
+  app.listen(serverConfig.port, (error) => {
+    if (!error) {
+      console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
+    }
+  });
 
   export default app;

@@ -1,10 +1,8 @@
-import ProductType from '../models/product_type';
+import productTypes from '../models/product_types';
 
-export function getProductTypes(req, res) {
-  ProductType.find().sort('_id').exec((err, productTypes) => {
-    if (err) {
-      res.status(500).send(err);
-    }
-    setTimeout((() => res.json(productTypes)), 10);
-  });
-}
+const getProductTypes = (req, res) => {
+  console.log('productTypes', productTypes.toJSON());
+  setTimeout((() => res.json(productTypes.toJSON())), 10);
+};
+
+export default { getProductTypes };

@@ -12,11 +12,12 @@
     // const languageNodes = props.intl.enabledLanguages.map(
     //   lang => <li key={lang} onClick={() => props.switchLanguage(lang)} className={lang === props.intl.locale ? styles.selected : ''}>{lang}</li>
     // );
+    console.log((typeof window === 'undefined') ? 'Server Render' : 'Client Render');
     return (
       <Grid fluid={true}>
         <Row>
-          <Col xs={4}><Link to='/'><span className={styles['rcLogoSprite']}></span></Link></Col>
-          <Col xs={4}>
+          <Col xs={12} sm={4}><Link to='/'><span className={styles['rcLogoSprite']}></span></Link></Col>
+          <Col xs={12} sm={4}>
             <FormGroup>
               <InputGroup>
                 <FormControl type="text" />
@@ -26,7 +27,7 @@
               </InputGroup>
             </FormGroup>
           </Col>
-          <Col xs={4}>
+          <Col xs={12} sm={4}>
             <Row className={styles.menuText}>
               <Col xs={4}><span>Contact Us</span></Col>
               <Col xs={4}><span>My Account</span></Col>
@@ -35,6 +36,7 @@
           </Col>
         </Row>
       </Grid>
+
     );
   }
 
